@@ -87,6 +87,7 @@ class App extends Component {
   }
 
   computer_go() {
+    console.log("computer_go")
     if(this.state.players.computer.start = true){
       //var computer = this.state.player.computer;
       var select = COMPUTER.find_move(this.state.moves, this.state.players.computer.symbol);
@@ -152,13 +153,16 @@ class App extends Component {
     console.log("game_over");
     for(var i = 0; i < 3; i++){
       for(var j = 0; j < 3; j++){
+        this.state.moves[i][j] = "_";
         var id = 3 * i + j;
         $("#" + id).animate({ opacity: 0}, 100);
       }
     }
-
-    this.state.moves = MOVES;
-    //add point
+    var you_count = this.state.players.you.count;
+    var comp_count = this.state.players.computer.count;
+    this.state.players.you.count = 0;
+    this.state.players.computer.count = 0;
+    this.setState(this.state);
     if(status === this.state.players.computer.symbol){
       this.state.players.computer.score++;
       this.state.players.you.start = true;
@@ -170,7 +174,9 @@ class App extends Component {
       this.setState(this.state, () => {this.computer_go()});
     }
     else if(status === "cats"){
-      if(this.state.players.computer.count > this.state.players.you.count){
+      console.log(comp_count);
+      console.log(you_count);
+      if(comp_count > you_count){
         this.state.players.you.start = true;
         this.setState(this.state);
       }
